@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -54,7 +55,11 @@ namespace ShareToKodi
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+			// TEMP TEST
+			linkHandler.ProcessUri(new Uri("http://channel9.msdn.com/Events/Visual-Studio/Connect-event-2014/011"))
+				.ContinueWith(t => System.Diagnostics.Debug.WriteLine("Done"));
+
+			Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -132,6 +137,24 @@ namespace ShareToKodi
 
             // TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+		private LinkHandler linkHandler = new LinkHandler();
+
+        /// <summary>
+        /// Called when the user shares a link to the app.
+        /// </summary>
+        /// <param name="args"></param>
+        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        {
+            if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
+            {
+                var uri = await args.ShareOperation.Data.GetWebLinkAsync();
+				await linkHandler.ProcessUri(uri);
+            }
+
+			// Disable for debugging.
+            //args.ShareOperation.ReportCompleted();
         }
     }
 }
