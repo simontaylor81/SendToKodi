@@ -19,6 +19,10 @@ namespace SendToKodi
 			{
 				return ProcessChannel9(uri);
 			}
+			else if (uri.Host.Contains("youtube.com"))
+			{
+				return ProcessYouTube(uri);
+			}
 			else
 			{
 				Debug.WriteLine("Unhandled URI: " + uri);
@@ -43,6 +47,18 @@ namespace SendToKodi
 
 			var videoUrl = node.GetAttributeValue("href", "");
 			return SharePayload.CreateUri(videoUrl);
+		}
+
+		// Process a YouTube URI.
+		private Task<SharePayload> ProcessYouTube(Uri uri)
+		{
+			var videoId = uri.ParseQueryString().Get("v");
+			if (string.IsNullOrWhiteSpace(videoId))
+			{
+				throw new Exception("Invalid YouTube link: " + uri.ToString());
+			}
+
+			return Task.FromResult(SharePayload.CreateYouTube(videoId));
 		}
 
 		// Load HTML document from the internet.

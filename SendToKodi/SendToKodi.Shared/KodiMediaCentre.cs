@@ -34,7 +34,17 @@ namespace SendToKodi
 
 		public Task Send(SharePayload media)
 		{
-			return SendRpc("Player.Open", new { file = media.contents });
+			switch (media.type)
+			{
+				case SharePayloadType.Uri:
+					return SendRpc("Player.Open", new { file = media.contents });
+
+				case SharePayloadType.YouTube:
+					var uri = "plugin://plugin.video.youtube/?action=play_video&videoid=" + media.contents;
+					return SendRpc("Player.Open", new { file = uri });
+            }
+
+			throw new Exception("Unknown media type: " + media.type.ToString());
 		}
 
 		private async Task SendRpc(string method, params object[] args)
