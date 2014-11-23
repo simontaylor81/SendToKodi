@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
   <Identity Name="f1baad39-a70b-41b4-99e2-3ca0f300a112" Publisher="CN=Simon" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>ShareToKodi.Windows</DisplayName>
+    <DisplayName>SendToKodi.Windows</DisplayName>
     <PublisherDisplayName>Simon</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -14,8 +14,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ShareToKodi.Windows.App">
-      <m2:VisualElements DisplayName="ShareToKodi.Windows" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="ShareToKodi.Windows" ForegroundText="light" BackgroundColor="#464646">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SendToKodi.Windows.App">
+      <m2:VisualElements DisplayName="SendToKodi.Windows" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="SendToKodi.Windows" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
       </m2:VisualElements>
       <Extensions>
@@ -29,5 +29,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer" />
   </Capabilities>
 </Package>

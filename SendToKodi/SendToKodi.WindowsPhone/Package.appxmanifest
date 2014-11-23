@@ -3,7 +3,7 @@
   <Identity Name="1425bbb2-2e26-41b2-89db-e26e05957dae" Publisher="CN=Simon" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="1425bbb2-2e26-41b2-89db-e26e05957dae" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>ShareToKodi.WindowsPhone</DisplayName>
+    <DisplayName>SendToKodi.WindowsPhone</DisplayName>
     <PublisherDisplayName>Simon</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -15,8 +15,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ShareToKodi.WindowsPhone.App">
-      <m3:VisualElements DisplayName="ShareToKodi.WindowsPhone" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="ShareToKodi.WindowsPhone" ForegroundText="light" BackgroundColor="transparent">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SendToKodi.WindowsPhone.App">
+      <m3:VisualElements DisplayName="SendToKodi.WindowsPhone" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="SendToKodi.WindowsPhone" ForegroundText="light" BackgroundColor="transparent">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />

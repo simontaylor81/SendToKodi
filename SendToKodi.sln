@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShareToKodi", "ShareToKodi", "{8342577D-9F07-4696-BE68-C889A9633044}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SendToKodi", "SendToKodi", "{8342577D-9F07-4696-BE68-C889A9633044}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShareToKodi.Shared", "ShareToKodi\ShareToKodi.Shared\ShareToKodi.Shared.shproj", "{0216E6AA-F8A2-4D4C-B193-7B9BF3411117}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SendToKodi.Shared", "SendToKodi\SendToKodi.Shared\SendToKodi.Shared.shproj", "{0216E6AA-F8A2-4D4C-B193-7B9BF3411117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareToKodi.Windows", "ShareToKodi\ShareToKodi.Windows\ShareToKodi.Windows.csproj", "{810D13FD-A482-43D8-B9D3-17EC5D357960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendToKodi.Windows", "SendToKodi\SendToKodi.Windows\SendToKodi.Windows.csproj", "{810D13FD-A482-43D8-B9D3-17EC5D357960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareToKodi.WindowsPhone", "ShareToKodi\ShareToKodi.WindowsPhone\ShareToKodi.WindowsPhone.csproj", "{E3340CF7-4E6F-4B01-BAFD-9555ADBBBAAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendToKodi.WindowsPhone", "SendToKodi\SendToKodi.WindowsPhone\SendToKodi.WindowsPhone.csproj", "{E3340CF7-4E6F-4B01-BAFD-9555ADBBBAAA}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ShareToKodi\ShareToKodi.Shared\ShareToKodi.Shared.projitems*{0216e6aa-f8a2-4d4c-b193-7b9bf3411117}*SharedItemsImports = 13
-		ShareToKodi\ShareToKodi.Shared\ShareToKodi.Shared.projitems*{810d13fd-a482-43d8-b9d3-17ec5d357960}*SharedItemsImports = 4
-		ShareToKodi\ShareToKodi.Shared\ShareToKodi.Shared.projitems*{e3340cf7-4e6f-4b01-bafd-9555adbbbaaa}*SharedItemsImports = 4
+		SendToKodi\SendToKodi.Shared\SendToKodi.Shared.projitems*{0216e6aa-f8a2-4d4c-b193-7b9bf3411117}*SharedItemsImports = 13
+		SendToKodi\SendToKodi.Shared\SendToKodi.Shared.projitems*{810d13fd-a482-43d8-b9d3-17ec5d357960}*SharedItemsImports = 4
+		SendToKodi\SendToKodi.Shared\SendToKodi.Shared.projitems*{e3340cf7-4e6f-4b01-bafd-9555adbbbaaa}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

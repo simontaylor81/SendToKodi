@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
-namespace ShareToKodi
+namespace SendToKodi
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -56,8 +56,11 @@ namespace ShareToKodi
 #endif
 
 			// TEMP TEST
-			linkHandler.ProcessUri(new Uri("http://channel9.msdn.com/Events/Visual-Studio/Connect-event-2014/011"))
-				.ContinueWith(t => System.Diagnostics.Debug.WriteLine("Done"));
+			//linkHandler.ProcessUri(new Uri("http://channel9.msdn.com/Events/Visual-Studio/Connect-event-2014/011"))
+			//	.ContinueWith(t =>
+			//	{
+			//		alfred.Send(t.Result);
+			//	});
 
 			Frame rootFrame = Window.Current.Content as Frame;
 
@@ -140,6 +143,7 @@ namespace ShareToKodi
         }
 
 		private LinkHandler linkHandler = new LinkHandler();
+		private KodiMediaCentre alfred = new KodiMediaCentre();
 
         /// <summary>
         /// Called when the user shares a link to the app.
@@ -150,11 +154,12 @@ namespace ShareToKodi
             if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
             {
                 var uri = await args.ShareOperation.Data.GetWebLinkAsync();
-				await linkHandler.ProcessUri(uri);
+				var media = await linkHandler.ProcessUri(uri);
+				await alfred.Send(media);
             }
 
 			// Disable for debugging.
-            //args.ShareOperation.ReportCompleted();
-        }
-    }
+			args.ShareOperation.ReportCompleted();
+		}
+	}
 }

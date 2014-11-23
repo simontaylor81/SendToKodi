@@ -8,25 +8,26 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareToKodi
+namespace SendToKodi
 {
     class LinkHandler
     {
 		// Process a URI.
-		public async Task ProcessUri(Uri uri)
+		public Task<SharePayload> ProcessUri(Uri uri)
 		{
 			if (uri.Host == "channel9.msdn.com")
 			{
-				await ProcessChannel9(uri);
+				return ProcessChannel9(uri);
 			}
 			else
 			{
 				Debug.WriteLine("Unhandled URI: " + uri);
+				return Task.FromResult<SharePayload>(null);
 			}
 		}
 
 		// Process a Channel 9 URI.
-		private async Task ProcessChannel9(Uri uri)
+		private async Task<SharePayload> ProcessChannel9(Uri uri)
 		{
 			// Get HTML from link.
 			var htmlDoc = await GetHtml(uri);
@@ -41,7 +42,7 @@ namespace ShareToKodi
 			}
 
 			var videoUrl = node.GetAttributeValue("href", "");
-			Debug.WriteLine(videoUrl);
+			return SharePayload.CreateUri(videoUrl);
 		}
 
 		// Load HTML document from the internet.
