@@ -56,11 +56,11 @@ namespace SendToKodi
 #endif
 
 			// TEMP TEST
-			linkHandler.ProcessUri(new Uri("https://www.youtube.com/watch?v=yQ5U8suTUw0"))
-				.ContinueWith(t =>
-				{
-					alfred.Send(t.Result);
-				});
+			//linkHandler.ProcessUri(new Uri("https://www.youtube.com/watch?v=yQ5U8suTUw0"))
+			//	.ContinueWith(t =>
+			//	{
+			//		alfred.Send(t.Result);
+			//	});
 
 			Frame rootFrame = Window.Current.Content as Frame;
 
