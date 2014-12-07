@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer;
@@ -154,12 +156,29 @@ namespace SendToKodi
             if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
             {
                 var uri = await args.ShareOperation.Data.GetWebLinkAsync();
-				var media = await linkHandler.ProcessUri(uri);
-				await alfred.Send(media);
+				await SendUri(uri);
             }
 
 			// Disable for debugging.
 			args.ShareOperation.ReportCompleted();
+		}
+
+		public async Task SendUri(Uri uri)
+		{
+			try
+			{
+				var media = await linkHandler.ProcessUri(uri);
+				await alfred.Send(media);
+			}
+			catch (Exception ex)
+			{
+				// For now, catch everything and log the problem to avoid crashing during dev.
+				// This obviously need to be better.
+				Debug.WriteLine("Caught exception: " + ex.ToString());
+				Debug.WriteLine(ex.StackTrace);
+
+				await Util.ShowError("Failed to send to Kodi. See debug log.");
+			}
 		}
 	}
 }

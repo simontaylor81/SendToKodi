@@ -25,9 +25,9 @@ namespace SendToKodi
 			}
 			else
 			{
-				Debug.WriteLine("Unhandled URI: " + uri);
-				return Task.FromResult<SharePayload>(null);
-			}
+				// By default, just send the URL directly.
+				return Task.FromResult<SharePayload>(SharePayload.CreateUri(uri.ToString()));
+            }
 		}
 
 		// Process a Channel 9 URI.

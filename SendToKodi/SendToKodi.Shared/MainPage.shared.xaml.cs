@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,9 +24,27 @@ namespace SendToKodi
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Required;
 		}
-		private void sendUrlButton_Click(object sender, RoutedEventArgs e)
+		private async void sendUrlButton_Click(object sender, RoutedEventArgs e)
 		{
+			if (!string.IsNullOrWhiteSpace(sendUrlBox.Text))
+			{
+				string url = sendUrlBox.Text;
+				if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+				{
+					// Try adding http://
+					url = "http://" + url;
+				}
 
+				if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+				{
+					// Invalid URL
+					await Util.ShowError("Invalid URL");
+					return;
+				}
+
+				// TODO: put this somewhere more appropriate?
+				await ((App)Application.Current).SendUri(new Uri(url, UriKind.Absolute));
+			}
 		}
 	}
 }
