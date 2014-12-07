@@ -22,7 +22,7 @@ namespace SendToKodi
 		public KodiMediaCentre()
 		{
 			// TODO
-			url = "http://alfred:8080/jsonrpc";
+			url = "http://192.168.0.150:8080/jsonrpc";
 			username = "xbmc";
 			password = "xbmc";
 
