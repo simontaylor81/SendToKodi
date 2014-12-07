@@ -15,8 +15,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KodiMediaCentre.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainPage.shared.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharePayload.cs" />
   </ItemGroup>
 </Project>
