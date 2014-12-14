@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MetroLog;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace SendToKodi
 		private string username;
 		private string password;
 		private HttpClient httpClient;
+
+		private static ILogger logger = LogManagerFactory.DefaultLogManager.GetLogger<KodiMediaCentre>();
 
 		public KodiMediaCentre()
 		{
@@ -65,17 +68,33 @@ namespace SendToKodi
 					new JArray(args.Select(arg => JObject.FromObject(arg)))));
 			}
 
-			Debug.WriteLine(json.ToString());
+			logger.Debug("Sending request to {0}", url);
+			logger.Trace(json.ToString());
 
 			// POST it to Kodi
 			try
 			{
-				var response = await httpClient.PostAsync(url, new StringContent(json.ToString(), Encoding.UTF8, "application/json"));
+				var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+				logger.Trace("Posting request...");
+                var responseTask = httpClient.PostAsync(url, content);
+				logger.Trace("Awaiting request...");
+				var response = await responseTask.ConfigureAwait(false);
+
+				logger.Trace("Response status code = {0}", response.StatusCode);
+				logger.Trace("Response.Content.ToString() = {0}", response.Content.ToString());
+
 				response.EnsureSuccessStatusCode();
-				Debug.WriteLine(await response.Content.ReadAsStringAsync());
+
+				if (logger.IsTraceEnabled)
+				{
+					var responseContent = await response.Content.ReadAsStringAsync();
+					logger.Trace("Successfully sent request. Response from Kodi:");
+					logger.Trace(responseContent);
+				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				logger.Info("Error sending to Kodi", ex);
 				throw;
 			}
 		}

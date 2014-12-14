@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetroLog;
+using MetroLog.Targets;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -40,7 +42,18 @@ namespace SendToKodi
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
-        }
+
+			UnhandledException += (s, e) => Util.ShowError("Unhandled exception: " + e.Message).Wait();
+
+			// Register log file handler.
+			LogManagerFactory.DefaultConfiguration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget());
+
+			// Set up global crash handler.
+			GlobalCrashHandler.Configure();
+
+			// Create logger now that we've configured it.
+			logger = LogManagerFactory.DefaultLogManager.GetLogger<App>();
+		}
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -56,13 +69,6 @@ namespace SendToKodi
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-
-			// TEMP TEST
-			//linkHandler.ProcessUri(new Uri("https://www.youtube.com/watch?v=yQ5U8suTUw0"))
-			//	.ContinueWith(t =>
-			//	{
-			//		alfred.Send(t.Result);
-			//	});
 
 			Frame rootFrame = Window.Current.Content as Frame;
 
@@ -138,6 +144,8 @@ namespace SendToKodi
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+			logger.Trace("OnSuspending");
+
             var deferral = e.SuspendingOperation.GetDeferral();
 
             // TODO: Save application state and stop any background activity
@@ -153,20 +161,36 @@ namespace SendToKodi
         /// <param name="args"></param>
         protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
         {
-            if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
-            {
-                var uri = await args.ShareOperation.Data.GetWebLinkAsync();
-				await SendUri(uri);
-            }
+			try
+			{
+				if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
+				{
+					logger.Trace("Got sharing request");
+					args.ShareOperation.ReportStarted();
 
-			// Disable for debugging.
-			args.ShareOperation.ReportCompleted();
+					var uri = await args.ShareOperation.Data.GetWebLinkAsync();
+					args.ShareOperation.ReportDataRetrieved();
+
+					await SendUri(uri, false);
+				}
+
+				// Disable for debugging.
+				logger.Trace("Share operation completed");
+				args.ShareOperation.ReportCompleted();
+			}
+			catch (Exception ex)
+			{
+				// This shouldn't happen...
+				logger.Error("Huh?", ex);
+				throw;
+			}
 		}
 
-		public async Task SendUri(Uri uri)
+		public async Task SendUri(Uri uri, bool bShowError = true)
 		{
 			try
 			{
+				logger.Debug("Sending Uri: {0}", uri.ToString());
 				var media = await linkHandler.ProcessUri(uri);
 				await alfred.Send(media);
 			}
@@ -174,11 +198,16 @@ namespace SendToKodi
 			{
 				// For now, catch everything and log the problem to avoid crashing during dev.
 				// This obviously need to be better.
-				Debug.WriteLine("Caught exception: " + ex.ToString());
-				Debug.WriteLine(ex.StackTrace);
+				logger.Warn("Exception thrown sending Uri", ex);
 
-				await Util.ShowError("Failed to send to Kodi. See debug log.");
+				// TODO: better solution for this
+				if (bShowError)
+				{
+					await Util.ShowError("Failed to send to Kodi. See debug log.");
+				}
 			}
 		}
+
+		private ILogger logger;
 	}
 }

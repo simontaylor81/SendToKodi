@@ -39,6 +39,7 @@
                          PlaceholderText="Enter URL to send"></TextBox>
                 <Button Grid.Column="1" x:Name="sendUrlButton" Click="sendUrlButton_Click">Send URL</Button>
             </Grid>
+            <Button x:Name="testYouTubeButton" Click="testYouTubeButton_Click">Test YouTube</Button>
         </StackPanel>
     </Grid>
 </Page>
