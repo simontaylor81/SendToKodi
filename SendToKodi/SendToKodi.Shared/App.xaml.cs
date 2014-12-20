@@ -155,17 +155,24 @@ namespace SendToKodi
 		private LinkHandler linkHandler = new LinkHandler();
 		private KodiMediaCentre alfred = new KodiMediaCentre();
 
-        /// <summary>
-        /// Called when the user shares a link to the app.
-        /// </summary>
-        /// <param name="args"></param>
-        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+		/// <summary>
+		/// Invoked when the application is activated as the target of a sharing operation.
+		/// </summary>
+		/// <param name="args">Details about the activation request.</param>
+		protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs e)
         {
+			logger.Trace("Got sharing request");
+
+#if WINDOWS_PHONE_APP
+			var shareTargetPage = new ShareTargetPage();
+			shareTargetPage.Activate(e);
+#endif
+
+			/*
 			try
 			{
 				if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
 				{
-					logger.Trace("Got sharing request");
 					args.ShareOperation.ReportStarted();
 
 					var uri = await args.ShareOperation.Data.GetWebLinkAsync();
@@ -184,6 +191,7 @@ namespace SendToKodi
 				logger.Error("Huh?", ex);
 				throw;
 			}
+			*/
 		}
 
 		public async Task SendUri(Uri uri, bool bShowError = true)
