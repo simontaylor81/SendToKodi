@@ -27,5 +27,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharePayload.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShareTargetPage.shared.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WakeOnLan.cs" />
   </ItemGroup>
 </Project>

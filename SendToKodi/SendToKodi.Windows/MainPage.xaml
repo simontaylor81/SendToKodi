@@ -45,6 +45,7 @@
                 <Button x:Name="sendUrlButton" Grid.Column="1" Click="sendUrlButton_Click">Send URL</Button>
             </Grid>
             <Button x:Name="testYouTubeButton" Click="testYouTubeButton_Click">Test YouTube</Button>
+            <Button x:Name="wakeButton" Click="wakeButton_Click">Wake</Button>
         </StackPanel>
     </Grid>
 </Page>

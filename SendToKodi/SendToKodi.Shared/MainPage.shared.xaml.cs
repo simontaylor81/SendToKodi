@@ -86,8 +86,12 @@ namespace SendToKodi
 				isSending = false;
 			}
 		}
+		private async void wakeButton_Click(object sender, RoutedEventArgs e)
+		{
+			await WakeOnLan.Wake(new byte[] { 0x00, 0x23, 0xae, 0x03, 0xee, 0x55 });
+		}
 
 		private bool isSending = false;
-		private static ILogger logger = LogManagerFactory.DefaultLogManager.GetLogger<ShareTargetPage>();
+		private static ILogger logger = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
 	}
 }
