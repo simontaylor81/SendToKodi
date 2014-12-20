@@ -171,8 +171,11 @@ namespace SendToKodi
 		public async Task SendUri(Uri uri)
 		{
 			logger.Debug("Sending Uri: {0}", uri.ToString());
+
 			var media = await linkHandler.ProcessUri(uri);
 			await alfred.Send(media);
+
+			logger.Trace("Uri sent successfully");
 		}
 
 		private ILogger logger;

@@ -87,9 +87,6 @@ namespace SendToKodi
 			if (shareOperation.Data.Contains(StandardDataFormats.WebLink))
 			{
 				webLink = await shareOperation.Data.GetWebLinkAsync();
-
-				// Kick off sharing immediately.
-				await DoShare();
 			}
 		}
 
@@ -98,14 +95,27 @@ namespace SendToKodi
 		/// </summary>
 		/// <param name="sender">Instance of Button used to initiate sharing.</param>
 		/// <param name="e">Event data describing how the button was clicked.</param>
-		//private async void ShareButton_Click(object sender, RoutedEventArgs e)
-		//{
-		//	// Kick off sharing.
-		//	if (webLink != null)
-		//	{
-		//		await DoShare();
-		//	}
-		//}
+		private async void ShareButton_Click(object sender, RoutedEventArgs e)
+		{
+			// Kick off sharing.
+			if (webLink != null)
+			{
+				await DoShare();
+			}
+		}
+
+		// Invoked with the user clicks the Wake button.
+		private async void WakeButton_Click(object sender, RoutedEventArgs e)
+		{
+			// TODO: non-hardcoded MAC address.
+			await WakeOnLan.Wake(new byte[] { 0x00, 0x23, 0xae, 0x03, 0xee, 0x55 });
+		}
+
+		// Invoked with the user clicks the Complete button.
+		private void CompleteButton_Click(object sender, RoutedEventArgs e)
+		{
+			shareOperation.ReportCompleted();
+		}
 
 		// Perform the actual share.
 		private async Task DoShare()
@@ -116,16 +126,18 @@ namespace SendToKodi
 
 			try
 			{
-				logger.Trace("Initiating share: " + webLink.ToString());
 				await ((App)Application.Current).SendUri(webLink);
-
-				logger.Trace("Share operation completed");
-				shareOperation.ReportCompleted();
 			}
 			catch (Exception ex)
 			{
 				logger.Info("Share operation failed", ex);
-				shareOperation.ReportError(ex.Message);
+
+				// TODO: Better way?
+				await Util.ShowError(ex.Message);
+			}
+			finally
+			{
+				this.DefaultViewModel["Sharing"] = false;
 			}
 		}
 	}
