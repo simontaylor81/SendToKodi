@@ -163,33 +163,9 @@ namespace SendToKodi
         {
 			logger.Trace("Got sharing request");
 
+			// Show the share UI, which handles doing the sending.
 			var shareTargetPage = new ShareTargetPage();
 			shareTargetPage.Activate(e);
-
-			/*
-			try
-			{
-				if (args.ShareOperation.Data.Contains(StandardDataFormats.WebLink))
-				{
-					args.ShareOperation.ReportStarted();
-
-					var uri = await args.ShareOperation.Data.GetWebLinkAsync();
-					args.ShareOperation.ReportDataRetrieved();
-
-					await SendUri(uri, false);
-				}
-
-				// Disable for debugging.
-				logger.Trace("Share operation completed");
-				args.ShareOperation.ReportCompleted();
-			}
-			catch (Exception ex)
-			{
-				// This shouldn't happen...
-				logger.Error("Huh?", ex);
-				throw;
-			}
-			*/
 		}
 
 		public async Task SendUri(Uri uri)
