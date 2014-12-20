@@ -163,10 +163,8 @@ namespace SendToKodi
         {
 			logger.Trace("Got sharing request");
 
-#if WINDOWS_PHONE_APP
 			var shareTargetPage = new ShareTargetPage();
 			shareTargetPage.Activate(e);
-#endif
 
 			/*
 			try
