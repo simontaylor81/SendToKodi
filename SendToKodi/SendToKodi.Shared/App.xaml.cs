@@ -194,26 +194,11 @@ namespace SendToKodi
 			*/
 		}
 
-		public async Task SendUri(Uri uri, bool bShowError = true)
+		public async Task SendUri(Uri uri)
 		{
-			try
-			{
-				logger.Debug("Sending Uri: {0}", uri.ToString());
-				var media = await linkHandler.ProcessUri(uri);
-				await alfred.Send(media);
-			}
-			catch (Exception ex)
-			{
-				// For now, catch everything and log the problem to avoid crashing during dev.
-				// This obviously need to be better.
-				logger.Warn("Exception thrown sending Uri", ex);
-
-				// TODO: better solution for this
-				if (bShowError)
-				{
-					await Util.ShowError("Failed to send to Kodi. See debug log.");
-				}
-			}
+			logger.Debug("Sending Uri: {0}", uri.ToString());
+			var media = await linkHandler.ProcessUri(uri);
+			await alfred.Send(media);
 		}
 
 		private ILogger logger;

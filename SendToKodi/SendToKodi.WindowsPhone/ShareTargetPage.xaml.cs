@@ -107,17 +107,26 @@ namespace SendToKodi
 		//	}
 		//}
 
+		// Perform the actual share.
 		private async Task DoShare()
 		{
 			this.DefaultViewModel["Sharing"] = true;
 
 			Debug.Assert(webLink != null);
 
-			logger.Trace("Initiating share: " + webLink.ToString();
-			await ((App)Application.Current).SendUri(webLink);
+			try
+			{
+				logger.Trace("Initiating share: " + webLink.ToString());
+				await ((App)Application.Current).SendUri(webLink);
 
-			logger.Trace("Share operation completed");
-			this.shareOperation.ReportCompleted();
+				logger.Trace("Share operation completed");
+				shareOperation.ReportCompleted();
+			}
+			catch (Exception ex)
+			{
+				logger.Info("Share operation failed", ex);
+				shareOperation.ReportError(ex.Message);
+			}
 		}
 	}
 }

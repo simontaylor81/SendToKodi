@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,62 +28,66 @@ namespace SendToKodi
 
 		private async void sendUrlButton_Click(object sender, RoutedEventArgs e)
 		{
+			// TODO: Use commands
+			if (isSending)
+			{
+				return;
+			}
+
 			if (string.IsNullOrWhiteSpace(sendUrlBox.Text))
 			{
 				return;
 			}
 
-			// TODO: Use commands
-			if (isSending)
+			var url = sendUrlBox.Text;
+
+			if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
 			{
+				// Try adding http://
+				url = "http://" + url;
+			}
+
+			if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+			{
+				// Invalid URL
+				await Util.ShowError("Invalid URL");
 				return;
 			}
-			isSending = true;
 
-			try
-			{
-				string url = sendUrlBox.Text;
-				if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
-				{
-					// Try adding http://
-					url = "http://" + url;
-				}
-
-				if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
-				{
-					// Invalid URL
-					await Util.ShowError("Invalid URL");
-					return;
-				}
-
-				// TODO: put this somewhere more appropriate?
-				await ((App)Application.Current).SendUri(new Uri(url, UriKind.Absolute));
-			}
-			finally
-			{
-				isSending = false;
-			}
+			await SendGuarded(url);
 		}
 
 		private async void testYouTubeButton_Click(object sender, RoutedEventArgs e)
 		{
-			// TODO: Use commands
 			if (isSending)
 			{
 				return;
 			}
+			await SendGuarded("https://www.youtube.com/watch?v=RR3ORb5gVqk");
+		}
+
+		private async Task SendGuarded(string url)
+		{
+			// TODO: Use commands
 			isSending = true;
 
 			try
 			{
-				await ((App)Application.Current).SendUri(new Uri("https://www.youtube.com/watch?v=RR3ORb5gVqk"));
+				// TODO: put this somewhere more appropriate?
+				await ((App)Application.Current).SendUri(new Uri(url, UriKind.Absolute));
+			}
+			catch (Exception ex)
+			{
+				logger.Info("Failed to send to Kodi", ex);
+				await Util.ShowError("Failed to send to Kodi. See debug log.");
 			}
 			finally
 			{
 				isSending = false;
-            }
+			}
 		}
 
 		private bool isSending = false;
-    }
+		private static ILogger logger = LogManagerFactory.DefaultLogManager.GetLogger<ShareTargetPage>();
+	}
 }
